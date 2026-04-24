@@ -158,7 +158,8 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
     ax.set_yticklabels(ylabels)
 
     ax.set_xlabel("Time")
-    ax.set_title("SRTF vs Priority Gantt Overlay (Process-Consistent Colors)")
+    ax.set_title("SRTF vs Priority Gantt Overlay")
 
     plt.tight_layout()
+    plt.savefig("docs/comparison.png", bbox_inches="tight")
     plt.show()

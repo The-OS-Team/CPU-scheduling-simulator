@@ -38,7 +38,8 @@ python -m src.main --compare --p 10
 * Gantt charts
 * Comparison results (if enabled)
 
-![Gantt image](docs/comparison.png)
+![](docs/comparison.png)
+
 ## Notes
 
 * Same workload is used for fair comparison

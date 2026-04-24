@@ -4,7 +4,7 @@ import argparse
 
 from src.simulation.config import SimulationConfig
 from src.simulation.runner import SimulationRunner
-from src.simulation.comparation import ComparisonRunner
+from src.simulation.comparison import ComparisonRunner
 
 
 def main():
