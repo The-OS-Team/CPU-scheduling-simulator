@@ -176,4 +176,4 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
 
     plt.tight_layout()
     plt.savefig("docs/comparison.png", bbox_inches="tight")
-    plt.show()
+    # plt.show()

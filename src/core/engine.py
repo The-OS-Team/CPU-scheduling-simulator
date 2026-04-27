@@ -25,9 +25,11 @@ class Engine:
             self._handle_arrivals()
 
             process = self.scheduler.pick_next()
-            print("CPU Tick: ", self.clock.get_time())
-            print(self.scheduler.queue)
-            print("Chosen one:", process)
+
+            # print("CPU Tick: ", self.clock.get_time())
+            # print(self.scheduler.queue)
+            # print("Chosen one:", process)
+
             if not process:
                 self._handle_idle()
                 continue

@@ -59,5 +59,5 @@ class ComparisonRunner:
             print(f"Avg WT : {data['avg_wt']:.2f}")
             print(f"Avg RT : {data['avg_rt']:.2f}")
             print(f"CPU    : {data['cpu']:.2f}%")
-        
+
         plot_overlay_gantt(self.results["srtf"]["timeline"], self.results["priority"]["timeline"])
