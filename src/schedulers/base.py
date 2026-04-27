@@ -12,7 +12,7 @@ class Scheduler(ABC):
         pass
     
     @abstractmethod
-    def pick_next(self, current_time):
+    def pick_next(self):
         """Pick the next process to run."""
         pass
     

@@ -36,12 +36,20 @@ def main():
         help="Run SRTF vs Priority comparison"
     )
 
+    parser.add_argument(
+        "--seed",
+    )
+
     args = parser.parse_args()
 
     config = SimulationConfig()
     config.set_num_processes(args.p)\
           .set_scheduler(args.sched)\
-          .set_mode(args.mode)
+          .set_mode(args.mode)\
+
+    if args.seed:
+        if args.seed.lower() == "none":
+            config.set_seed(None)
 
     # Comparison Mode
     if args.compare:

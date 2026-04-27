@@ -24,8 +24,10 @@ class Engine:
             
             self._handle_arrivals()
 
-            process = self.scheduler.pick_next(self.clock.get_time())
-
+            process = self.scheduler.pick_next()
+            print("CPU Tick: ", self.clock.get_time())
+            print(self.scheduler.queue)
+            print("Chosen one:", process)
             if not process:
                 self._handle_idle()
                 continue
@@ -54,7 +56,6 @@ class Engine:
 
             process.state = ProcessState.READY
 
-            # ONLY READY PROCESSES ENTER SCHEDULER
             self.scheduler.add_process(process)
 
             self.arrival_index += 1
@@ -66,7 +67,7 @@ class Engine:
         self.clock.tick(1)
         end = self.clock.get_time()
 
-        self.timeline.append(("IDLE", start, end))
+        self.timeline.append((0, start, end))
 
     def _start_process_if_needed(self, process):
         """First-time execution bookkeeping."""

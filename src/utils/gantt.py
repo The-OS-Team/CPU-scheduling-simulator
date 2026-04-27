@@ -50,6 +50,9 @@ import matplotlib.cm as cm
 def plot_gantt(timeline):
     fig, ax = plt.subplots()
 
+    # CPU IDLE
+    IDLE_PID = 0
+
     # Collect all processes
     all_pids = sorted(set(pid for pid, _, _ in timeline))
 
@@ -61,11 +64,15 @@ def plot_gantt(timeline):
         for i, pid in enumerate(all_pids)
     }
 
+    pid_to_color[IDLE_PID] = 'lightgray'
+
     # Y-axis mapping (same as before)
     y_map = {}
     y_counter = 0
 
     for pid, start, end in timeline:
+        is_idle = (pid == IDLE_PID)
+
         if pid not in y_map:
             y_map[pid] = y_counter
             y_counter += 1
@@ -75,7 +82,9 @@ def plot_gantt(timeline):
             end - start,
             left=start,
             color=pid_to_color[pid],  
-            edgecolor="black"
+            edgecolor="black",
+            alpha =0.6 if is_idle else 1.0,
+            hatch="///" if is_idle else None
         )
 
     # Labels
@@ -86,11 +95,14 @@ def plot_gantt(timeline):
     ax.set_title("Process-wise Gantt Chart")
 
     plt.tight_layout()
-    plt.show()
+    plt.savefig("docs/plot.png", bbox_inches="tight")
 
 
 def plot_overlay_gantt(srtf_timeline, priority_timeline):
     fig, ax = plt.subplots()
+
+    # CPU IDLE
+    IDLE_PID  = 0
 
     # Build global process set
     all_pids = set()
@@ -108,6 +120,8 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
         pid: colormap(i % 10)
         for i, pid in enumerate(sorted(all_pids))
     }
+
+    pid_to_color[IDLE_PID] = 'lightgray'
 
     #  Y-axis mapping (same as before)
     y_map = {

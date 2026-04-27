@@ -11,7 +11,7 @@ class SJF(Scheduler):
     def add_process(self, process):
         self.queue.append(process)
     
-    def pick_next(self, _):
+    def pick_next(self):
         """Pick process with shortest remaining time."""
         if not self.queue:
             return None

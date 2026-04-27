@@ -37,3 +37,6 @@ class SimulationConfig:
     def set_mode(self, mode):
         self.mode = mode
         return self
+    def set_seed(self, seed):
+        self.seed = seed
+        return self

@@ -21,12 +21,12 @@ def generate_processes(
         - priority: includes priority-aware dataset
     """
 
+
     if seed is not None:
         random.seed(seed)
-
     processes = []
 
-    for i in range(num_processes):
+    for i in range(1, num_processes+1):
 
         # Arrival logic
         if mode == "simultaneous":

@@ -43,7 +43,6 @@ class SimulationRunner:
 
         try:
             validate_config(self.config)
-
             processes = generate_processes(
                 self.config.num_processes,
                 burst_range=self.config.burst_range,
@@ -51,7 +50,6 @@ class SimulationRunner:
                 mode=self.config.mode,
                 seed=self.config.seed
             )
-
             validate_processes(processes)
 
             scheduler = self._create_scheduler()
@@ -78,4 +76,4 @@ class SimulationRunner:
     def print_results(self):
         report = self.get_report()
         report.print_full_report(config=self.config)
-        # plot_gantt(self.timeline)
+        plot_gantt(self.timeline)
