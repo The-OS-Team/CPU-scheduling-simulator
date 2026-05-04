@@ -142,22 +142,30 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
 
     # Plot SRTF
     for pid, start, end in srtf_timeline:
+        is_idle = (pid == IDLE_PID)
+
         ax.barh(
             get_y("SRTF", pid),
             end - start,
             left=start,
             color=pid_to_color[pid],
-            edgecolor="black"
+            edgecolor="black",
+            alpha =0.6 if is_idle else 1.0,
+            hatch="///" if is_idle else None 
         )
 
     # Plot PRIORITY
     for pid, start, end in priority_timeline:
+        is_idle = (pid == IDLE_PID)
+
         ax.barh(
             get_y("PRIORITY", pid),
             end - start,
             left=start,
             color=pid_to_color[pid],
-            edgecolor="black"
+            edgecolor="black",
+            alpha =0.6 if is_idle else 1.0,
+            hatch="///" if is_idle else None
         )
 
     yticks = []

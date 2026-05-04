@@ -8,20 +8,30 @@ This project simulates and compares CPU scheduling algorithms using a time-drive
 * SRTF (Shortest Remaining Time First)
 * Priority Scheduling
 
-## Usage
-
-Run from the project root:
-
-Single scheduler:
-
+## Clone
 ```bash
-python -m src.main --sched srtf --p 10
+git clone https://github.com/The-OS-Team/CPU-scheduling-simulator.git
+cd CPU-scheduling-simulator
 ```
 
-Comparison (SRTF vs Priority):
+## Usage
+Run from the project root:
+
+Single scheduler `SRTF`:
 
 ```bash
-python -m src.main --compare --p 10
+python -m src.main --sched srtf --p 8 --mode random
+```
+
+Single scheduler `Priority`:
+
+```bash
+python -m src.main --sched priority --p 10 --mode random
+```
+Comparison `SRTF vs Priority`:
+
+```bash
+python -m src.main --compare --p 10 --mode random
 ```
 
 ## Arguments
@@ -39,6 +49,7 @@ python -m src.main --compare --p 10
 * Comparison results (if enabled)
 
 ![Gantt image](docs/comparison.png)
+
 ## Notes
 
 * Same workload is used for fair comparison
