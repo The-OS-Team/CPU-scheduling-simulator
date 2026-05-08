@@ -26,10 +26,6 @@ class Engine:
 
             process = self.scheduler.pick_next()
 
-            # print("CPU Tick: ", self.clock.get_time())
-            # print(self.scheduler.queue)
-            # print("Chosen one:", process)
-
             if not process:
                 self._handle_idle()
                 continue
@@ -83,14 +79,21 @@ class Engine:
         """Execute selected process."""
 
         start = self.clock.get_time()
+        
+        ## Optimzation Trick
+        next_arrival = self._next_arrival_time()
 
-        delta = self.scheduler.time_slice(process, start)
+        delta = self.scheduler.time_slice(
+            process,
+            start,
+            next_arrival
+        )
 
         end = start + delta
 
         self.timeline.append((process.pid, start, end))
 
-        # CPU work
+        
         process.remaining_time -= delta
         self.clock.tick(delta)
 
@@ -100,6 +103,14 @@ class Engine:
             process.finish_time = self.clock.get_time()
             process.state = ProcessState.FINISHED
 
-            # IMPORTANT:
-            # Do NOT reinsert anywhere
-            # Do NOT let scheduler see it again
+        else:
+            process.state = ProcessState.READY
+            self.scheduler.requeue(process)            
+
+    ## Helper for Optimzation instead of ticking we can jump to the next arrival
+    def _next_arrival_time(self):
+
+        if self.arrival_index >= len(self.processes):
+            return None
+
+        return self.processes[self.arrival_index].arrival_time

@@ -27,7 +27,7 @@ def generate_processes(
     processes = []
 
     for i in range(1, num_processes+1):
-
+        
         # Arrival logic
         if mode == "simultaneous":
             arrival = 0
@@ -37,9 +37,6 @@ def generate_processes(
 
         elif mode == "random":
             arrival = random.randint(0, num_processes * 2)
-
-        elif mode == "priority":
-            arrival = random.randint(0, num_processes)
 
         else:
             raise ValueError(f"Unknown mode: {mode}")

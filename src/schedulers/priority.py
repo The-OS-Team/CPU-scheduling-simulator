@@ -1,39 +1,74 @@
-"""Priority Scheduling (non-preemptive or preemptive)"""
+"""Priority Scheduling (preemptive/non-preemptive)."""
 
 from src.schedulers.base import Scheduler
 from src.models.state import ProcessState
+import heapq
+
 
 class PriorityScheduler(Scheduler):
     """
-    Priority Scheduling (non-preemptive or preemptive optional).
-    
-    Lower number = higher priority.
+    Priority Scheduling Scheduler.
+
+    Lower priority number = higher priority.
+
+    Supports:
+    - Non-preemptive
+    - Preemptive
     """
 
     def __init__(self, preemptive=False):
-        self.queue = []
         self.preemptive = preemptive
+        self.heap = []
 
     def add_process(self, process):
-        if process.state == ProcessState.READY and process.remaining_time > 0:
-            self.queue.append(process)
+
+        if process.remaining_time <= 0:
+            return
+
+        heapq.heappush(
+            self.heap,
+            (
+                process.priority,
+                process.arrival_time,
+                process.pid,
+                process
+            )
+        )
 
     def pick_next(self):
-        """Pick process with highest priority (lowest number)."""
-        self.queue = [p for p in self.queue if p.remaining_time > 0 and p.state != ProcessState.FINISHED] 
 
-        if not self.queue:
-            return None
+        while self.heap:
 
-        # sort by priority first, then arrival (tie-breaker)
-        self.queue.sort(key=lambda p: (p.priority, p.arrival_time))
-        return self.queue[0]
+            _, _, _, process = heapq.heappop(self.heap)
 
-    def time_slice(self, process, current_time):
-        if self.preemptive:
-            return 1  # simulate interrupt-driven preemption
-        return process.remaining_time
- 
+            if (
+                process.state != ProcessState.FINISHED
+                and process.remaining_time > 0
+            ):
+                return process
+
+        return None
+
+    def time_slice(self, process, current_time, next_arrival):
+
+        # NON-PREEMPTIVE:
+        # Run until completion
+        if not self.preemptive:
+            return process.remaining_time
+
+        # PREEMPTIVE:
+        # Only important event is next arrival
+        if next_arrival is None:
+            return process.remaining_time
+
+        time_until_arrival = next_arrival - current_time
+
+        return min(process.remaining_time, time_until_arrival)
+
+    def requeue(self, process):
+
+        if process.remaining_time > 0:
+            self.add_process(process)
+
     def has_work(self):
-        self.queue = [p for p in self.queue if p.remaining_time > 0]
-        return len(self.queue) > 0
+        return len(self.heap) > 0

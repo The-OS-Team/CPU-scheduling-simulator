@@ -2,31 +2,59 @@
 
 from src.schedulers.base import Scheduler
 from src.models.state import ProcessState
+import heapq
+
 
 class SRTF(Scheduler):
-    """Shortest Remaining Time First (Preemptive SJF)."""
-    
+    """Shortest Remaining Time First using min-heap."""
+
     def __init__(self):
-        self.queue = []
+        self.heap = []
 
     def add_process(self, process):
-        if process.state == ProcessState.READY and process.remaining_time > 0:
-            self.queue.append(process)
-    
+
+        if process.remaining_time <= 0:
+            return
+
+        heapq.heappush(
+            self.heap,
+            (
+                process.remaining_time,
+                process.arrival_time,
+                process.pid,
+                process
+            )
+        )
+
     def pick_next(self):
-        """Pick process with shortest remaining time."""
-        self.queue = [p for p in self.queue if p.remaining_time > 0 and p.state != ProcessState.FINISHED] 
 
-        if not self.queue:
-            return None
+        while self.heap:
 
-        self.queue.sort(key=lambda p: (p.remaining_time, p.arrival_time))
-        return self.queue[0]
-    
-    def time_slice(self, process, current_time):
-        """SRTF is preemptive → run only 1 unit."""
-        return 1
+            remaining, _, _, process = heapq.heappop(self.heap)
+
+            if process.state != ProcessState.FINISHED \
+               and process.remaining_time > 0:
+
+                return process
+
+        return None
+
+    def time_slice(self, process, current_time, next_arrival):
+
+        remaining = process.remaining_time
+
+        if next_arrival is None:
+            return remaining
+
+        ## Instead of 1 tick
+        ## Nothing important can happen before the next arrival
+        time_until_arrival = next_arrival - current_time
+
+        return min(remaining, time_until_arrival)
+ 
+    def requeue(self, process):
+        if process.remaining_time > 0:
+            self.add_process(process)
 
     def has_work(self):
-        self.queue = [p for p in self.queue if p.remaining_time > 0]
-        return len(self.queue) > 0
+        return len(self.heap) > 0

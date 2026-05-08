@@ -9,6 +9,7 @@ from src.metrics.collector import Metrics
 from src.metrics.report import Report
 from src.simulation.config import SimulationConfig
 
+from src.utils.workloads import get_workload
 from src.utils.generator import generate_processes
 from src.utils.validator import validate_processes, validate_config, ValidationError
 from src.utils.gantt import plot_gantt
@@ -43,13 +44,17 @@ class SimulationRunner:
 
         try:
             validate_config(self.config)
-            processes = generate_processes(
-                self.config.num_processes,
-                burst_range=self.config.burst_range,
-                priority_range=self.config.priority_range,
-                mode=self.config.mode,
-                seed=self.config.seed
-            )
+
+            if self.config.workload:
+                processes = get_workload(self.config.workload)
+            else:
+                processes = generate_processes(
+                    self.config.num_processes,
+                    burst_range=self.config.burst_range,
+                    priority_range=self.config.priority_range,
+                    mode=self.config.mode,
+                    seed=self.config.seed
+                )
             validate_processes(processes)
 
             scheduler = self._create_scheduler()

@@ -3,7 +3,6 @@
 import copy
 
 from src.simulation.runner import SimulationRunner
-from src.simulation.config import SimulationConfig
 from src.utils.gantt import plot_overlay_gantt
 
 
@@ -19,7 +18,6 @@ class ComparisonRunner:
         schedulers = ["srtf", "priority"]
         """
 
-        base_processes = None
 
         for scheduler in schedulers:
 
@@ -27,14 +25,7 @@ class ComparisonRunner:
             config.set_scheduler(scheduler)
 
             runner = SimulationRunner(config)
-
-            # IMPORTANT: reuse same generated workload
-            if base_processes is None:
-                processes = runner.run()
-                base_processes = processes
-            else:
-                # re-run with identical seed if you implemented it
-                runner.run()
+            runner.run()
 
             report = runner.get_report()
 

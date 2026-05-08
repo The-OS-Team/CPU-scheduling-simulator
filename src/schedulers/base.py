@@ -20,7 +20,10 @@ class Scheduler(ABC):
     def time_slice(self, process, current_time):
         """Determine the time slice for a process."""
         pass
-    
+    @abstractmethod
+    def requeue(self, process):
+        """Requeue unfinished work"""
+        pass
     @abstractmethod
     def has_work(self):
         """Check if there's any work in the queue."""

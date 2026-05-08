@@ -1,27 +1,65 @@
 """Shortest Job First (SJF) scheduler - non-preemptive."""
+
 from src.schedulers.base import Scheduler
+from src.models.state import ProcessState
+import heapq
 
 
 class SJF(Scheduler):
-    """Shortest Job First scheduler (non-preemptive)."""
-    
+    """
+    Shortest Job First Scheduler (non-preemptive).
+
+    Picks process with shortest burst/remaining time.
+    """
+
     def __init__(self):
-        self.queue = []
-    
+        self.heap = []
+
     def add_process(self, process):
-        self.queue.append(process)
-    
+
+        if process.remaining_time <= 0:
+            return
+
+        heapq.heappush(
+            self.heap,
+            (
+                process.remaining_time,
+                process.arrival_time,
+                process.pid,
+                process
+            )
+        )
+
     def pick_next(self):
-        """Pick process with shortest remaining time."""
-        if not self.queue:
-            return None
-        
-        self.queue.sort(key=lambda p: p.remaining_time)
-        return self.queue.pop(0)
-    
-    def time_slice(self, process, _):
-        """Give entire burst time (non-preemptive)."""
+
+        while self.heap:
+
+            _, _, _, process = heapq.heappop(self.heap)
+
+            if (
+                process.state != ProcessState.FINISHED
+                and process.remaining_time > 0
+            ):
+                return process
+
+        return None
+
+    def time_slice(self, process):
+        """
+        Non-preemptive:
+        run process until completion.
+        """
+
         return process.remaining_time
-    
+
+    def requeue(self, process):
+        """
+        SJF is non-preemptive.
+
+        Engine should never requeue unfinished work here,
+        but method exists for interface consistency.
+        """
+        pass
+
     def has_work(self):
-        return len(self.queue) > 0
+        return len(self.heap) > 0

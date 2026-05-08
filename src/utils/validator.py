@@ -21,7 +21,7 @@ def validate_processes(processes):
         if p.total_burst <= 0:
             raise ValidationError(f"Invalid burst time for PID {p.pid}")
 
-        # Optional safety
+        # Safety
         if p.total_burst is None:
             raise ValidationError(f"Missing burst time for PID {p.pid}")
         
@@ -31,10 +31,6 @@ def validate_config(config):
 
     if config.num_processes <= 0:
         raise ValidationError("Number of processes must be > 0")
-
-    if config.scheduler_type.lower() == "rr":
-        if config.time_quantum is None or config.time_quantum <= 0:
-            raise ValidationError("RR requires time_quantum > 0")
 
     if config.scheduler_type.lower() not in ["sjf","srtf","priority"]:
         raise ValidationError(f"Unknown scheduler: {config.scheduler_type}")

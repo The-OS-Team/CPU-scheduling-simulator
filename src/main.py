@@ -27,13 +27,27 @@ def main():
         "--mode",
         type=str,
         default="simultaneous",
-        choices=["simultaneous", "random"],
+        choices=["simultaneous", "staggered", "random"],
     )
+
 
     parser.add_argument(
         "--compare",
         action="store_true",
         help="Run SRTF vs Priority comparison"
+    )
+
+    parser.add_argument(
+        "--workload",
+        type=str,
+        choices=[
+            "balanced",
+            "conflict",
+            "starvation",
+            "simultaneous",
+            "ties",
+        ],
+        help="Use predefined workload"
     )
 
     parser.add_argument(
@@ -46,6 +60,9 @@ def main():
     config.set_num_processes(args.p)\
           .set_scheduler(args.sched)\
           .set_mode(args.mode)\
+
+    if args.workload:
+        config.set_workload(args.workload)
 
     if args.seed:
         if args.seed.lower() == "none":
