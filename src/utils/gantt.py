@@ -97,6 +97,8 @@ def plot_gantt(timeline):
     plt.tight_layout()
     plt.savefig("docs/plot.png", bbox_inches="tight")
 
+    return fig
+
 
 def plot_overlay_gantt(srtf_timeline, priority_timeline):
     fig, ax = plt.subplots()

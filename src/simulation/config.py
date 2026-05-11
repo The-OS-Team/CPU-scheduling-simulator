@@ -10,6 +10,7 @@ class SimulationConfig:
         self.mode = "simultaneous"
         self.seed = 42
 
+        self.plotChart = False
         self.workload = None
         self.burst_range = (5, 20)
         self.priority_range = (1, 10)
@@ -34,3 +35,8 @@ class SimulationConfig:
     def set_seed(self, seed):
         self.seed = seed
         return self
+    
+    def set_chart(self, chart):
+        self.plotChart = chart
+        return self
+

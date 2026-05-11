@@ -39,22 +39,24 @@ class SimulationRunner:
         else:
             raise ValueError(f"Unknown scheduler: {self.config.scheduler_type}")
 
-    def run(self):
+    def run(self, processes=None):
         """Run simulation."""
 
         try:
             validate_config(self.config)
+            
+            if processes is None:
+                if self.config.workload:
+                    processes = get_workload(self.config.workload)
+                else:
+                    processes = generate_processes(
+                        self.config.num_processes,
+                        burst_range=self.config.burst_range,
+                        priority_range=self.config.priority_range,
+                        mode=self.config.mode,
+                        seed=self.config.seed
+                    )
 
-            if self.config.workload:
-                processes = get_workload(self.config.workload)
-            else:
-                processes = generate_processes(
-                    self.config.num_processes,
-                    burst_range=self.config.burst_range,
-                    priority_range=self.config.priority_range,
-                    mode=self.config.mode,
-                    seed=self.config.seed
-                )
             validate_processes(processes)
 
             scheduler = self._create_scheduler()

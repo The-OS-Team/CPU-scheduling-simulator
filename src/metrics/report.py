@@ -109,6 +109,6 @@ class Report:
         if config:
             self.print_config(config)
 
-        self.print_process_summary()
+        # self.print_process_summary()
         self.print_statistics()
         # self.print_analysis()

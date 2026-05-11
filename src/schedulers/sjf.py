@@ -44,7 +44,7 @@ class SJF(Scheduler):
 
         return None
 
-    def time_slice(self, process):
+    def time_slice(self, process, current_time, next_arrival):
         """
         Non-preemptive:
         run process until completion.

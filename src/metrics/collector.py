@@ -37,7 +37,9 @@ class Metrics:
         if process.start_time is None:
             return None
         return process.start_time - process.arrival_time
-
+    
+    def get_total_time(self):
+        return self.total_time
 
     def get_avg_turnaround(self):
         times = [

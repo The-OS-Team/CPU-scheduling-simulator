@@ -22,7 +22,6 @@ def get_workload(name):
 
         # -----------------------------------------
         # Priority vs burst conflict
-        # IMPORTANT discussion example
         # -----------------------------------------
         "conflict": [
             Process(1, 0, 20, 1),
@@ -31,7 +30,7 @@ def get_workload(name):
         ],
 
         # -----------------------------------------
-        # Starvation / fairness example
+        # Starvation / fairness example (same brust time, same priority)
         # -----------------------------------------
         "starvation": [
             Process(1, 0, 100, 10),
@@ -43,6 +42,27 @@ def get_workload(name):
             Process(6, 5, 1, 1),
         ],
 
+
+        # -----------------------------------------
+        # Tie-breaking validation
+        # -----------------------------------------
+        "ties": [
+            Process(1, 0, 5, 1),
+            Process(2, 0, 5, 1),
+            Process(3, 0, 5, 1),
+        ],
+
+
+
+
+
+
+
+
+
+
+
+
         # -----------------------------------------
         # Simultaneous arrival stress test
         # -----------------------------------------
@@ -53,14 +73,7 @@ def get_workload(name):
             Process(4, 0, 8, 5),
         ],
 
-        # -----------------------------------------
-        # Tie-breaking validation
-        # -----------------------------------------
-        "ties": [
-            Process(1, 0, 5, 1),
-            Process(2, 0, 5, 1),
-            Process(3, 0, 5, 1),
-        ],
+
     }
 
     if name not in workloads:

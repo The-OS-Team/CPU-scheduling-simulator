@@ -51,6 +51,12 @@ def main():
     )
 
     parser.add_argument(
+        "--chart",
+        action="store_true",
+    )
+
+
+    parser.add_argument(
         "--seed",
     )
 
@@ -60,6 +66,7 @@ def main():
     config.set_num_processes(args.p)\
           .set_scheduler(args.sched)\
           .set_mode(args.mode)\
+          .set_chart(args.chart)
 
     if args.workload:
         config.set_workload(args.workload)
@@ -67,6 +74,7 @@ def main():
     if args.seed:
         if args.seed.lower() == "none":
             config.set_seed(None)
+     
 
     # Comparison Mode
     if args.compare:
