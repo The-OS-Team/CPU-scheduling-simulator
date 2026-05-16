@@ -1,0 +1,57 @@
+# ── Python ─────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Compiled extensions
+*.so
+
+# ── Virtual environments ───────────────────────────────
+venv/
+.env/
+.venv/
+
+# ── Distribution / packaging ───────────────────────────
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ── Installer logs ─────────────────────────────────────
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ── Unit test / coverage ───────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+
+# ── Jupyter Notebook ───────────────────────────────────
+.ipynb_checkpoints/
+
+# ── IDEs / Editors ─────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── OS files ───────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ───────────────────────────────────────────────
+*.log
+
+# ── Matplotlib cache ───────────────────────────────────
+.matplotlib/
+
+# ── CustomTkinter / GUI temp (optional) ────────────────
+*.png
+*.jpg
+
+# ── Environment variables ──────────────────────────────
+.env

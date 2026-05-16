@@ -81,7 +81,7 @@ def main():
         print("\n▶️ Running Scheduler Comparison (SRTF vs Priority)")
 
         runner = ComparisonRunner(config)
-        runner.run_all(["srtf", "priority"])
+        runner.run_all(["sjf", "priority"])
         runner.print_comparison()
 
     # Single Scheduler Mode

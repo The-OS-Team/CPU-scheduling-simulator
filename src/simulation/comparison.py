@@ -13,11 +13,13 @@ class ComparisonRunner:
         self.base_config = base_config
         self.results = {}
 
-    def run_all(self, schedulers):
+    def run_all(self, schedulers, processes=None):
         """
-        schedulers = ["srtf", "priority"]
+        schedulers = ["sjf", "priority"]
         """
 
+        
+        self.results = {}
 
         for scheduler in schedulers:
 
@@ -25,9 +27,16 @@ class ComparisonRunner:
             config.set_scheduler(scheduler)
 
             runner = SimulationRunner(config)
-            runner.run()
+
+            if processes is not None:
+                proc = copy.deepcopy(processes)
+                completed = runner.run(proc)
+            else:
+                completed = runner.run()
+
 
             report = runner.get_report()
+            
 
             self.results[scheduler] = {
                 "avg_tat": report.metrics.get_avg_turnaround(),
@@ -54,4 +63,4 @@ class ComparisonRunner:
             print(f"CPU    : {data['cpu']:.2f}%")
 
         if self.base_config.plotChart:
-            plot_overlay_gantt(self.results["srtf"]["timeline"], self.results["priority"]["timeline"])
+            plot_overlay_gantt(self.results["sjf"]["timeline"], self.results["priority"]["timeline"])

@@ -48,6 +48,7 @@ import matplotlib.cm as cm
 
 
 def plot_gantt(timeline):
+    print("Generating Gantt Chart..")
     fig, ax = plt.subplots()
 
     # CPU IDLE
@@ -96,11 +97,13 @@ def plot_gantt(timeline):
 
     plt.tight_layout()
     plt.savefig("docs/plot.png", bbox_inches="tight")
+    print("Chart Generated, checkout out docs/plot.png")
 
     return fig
 
 
-def plot_overlay_gantt(srtf_timeline, priority_timeline):
+def plot_overlay_gantt(timeline_a, timeline_b):
+    print("Generating Gantt Chart..")
     fig, ax = plt.subplots()
 
     # CPU IDLE
@@ -109,10 +112,10 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
     # Build global process set
     all_pids = set()
 
-    for pid, _, _ in srtf_timeline:
+    for pid, _, _ in timeline_a:
         all_pids.add(pid)
 
-    for pid, _, _ in priority_timeline:
+    for pid, _, _ in timeline_b:
         all_pids.add(pid)
 
     # Assign consistent colors
@@ -127,7 +130,7 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
 
     #  Y-axis mapping (same as before)
     y_map = {
-        "SRTF": {},
+        "SJF": {},
         "PRIORITY": {}
     }
 
@@ -142,12 +145,12 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
 
         return y_map[label][pid]
 
-    # Plot SRTF
-    for pid, start, end in srtf_timeline:
+    # Plot SJF
+    for pid, start, end in timeline_a:
         is_idle = (pid == IDLE_PID)
 
         ax.barh(
-            get_y("SRTF", pid),
+            get_y("SJF", pid),
             end - start,
             left=start,
             color=pid_to_color[pid],
@@ -157,7 +160,7 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
         )
 
     # Plot PRIORITY
-    for pid, start, end in priority_timeline:
+    for pid, start, end in timeline_b:
         is_idle = (pid == IDLE_PID)
 
         ax.barh(
@@ -173,7 +176,7 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
     yticks = []
     ylabels = []
 
-    for scheduler in ["SRTF", "PRIORITY"]:
+    for scheduler in ["SJF", "PRIORITY"]:
         for pid, y in y_map[scheduler].items():
             yticks.append(y)
             ylabels.append(f"{scheduler}-P{pid}")
@@ -182,8 +185,11 @@ def plot_overlay_gantt(srtf_timeline, priority_timeline):
     ax.set_yticklabels(ylabels)
 
     ax.set_xlabel("Time")
-    ax.set_title("SRTF vs Priority Gantt Overlay")
+    ax.set_title("SJF vs Priority Gantt Overlay")
 
     plt.tight_layout()
     plt.savefig("docs/comparison.png", bbox_inches="tight")
+    print("Chart Generated, check out docs/comparison.png")
     # plt.show()
+
+    return fig
