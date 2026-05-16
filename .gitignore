@@ -49,9 +49,5 @@ Thumbs.db
 # ── Matplotlib cache ───────────────────────────────────
 .matplotlib/
 
-# ── CustomTkinter / GUI temp (optional) ────────────────
-*.png
-*.jpg
-
 # ── Environment variables ──────────────────────────────
 .env
